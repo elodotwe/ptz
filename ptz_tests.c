@@ -21,12 +21,20 @@ int main() {
 	printf("testing libptz\n");
 	assert_equals_u32(0x80, libptz_pack_packet_header(0, 0), "packet header with 0 sender and receiver");
 	assert_equals_u32(0xf7, libptz_pack_packet_header(7, 7), "packet header with 7 sender and receiver");
-	uint8_t output_buffer[50];
+	uint8_t output_buffer[50] = {0};
 	uint8_t payload_buffer[] = {0x12, 0x34, 0x56};
 	uint32_t packed_length = libptz_pack_packet(payload_buffer, sizeof(payload_buffer), output_buffer, sizeof(output_buffer));
 	assert_equals_u32(5, packed_length, "packed packet length with 3 payload bytes should be 5");
 	uint8_t packed_goal[] = {0x80, 0x12, 0x34, 0x56, 0xff};
 	assert_equals_u8buf(packed_goal, output_buffer, sizeof(packed_goal), "packed packet should have proper header and terminator");
+
+	memset(output_buffer, 0, sizeof(output_buffer));
+
+	uint8_t packed_stop_goal[] = {0x80, 0x01, 0x04, 0x07, 0x00, 0xff};
+	packed_length = libptz_encode_zoom_stop(output_buffer, sizeof(output_buffer));
+	assert_equals_u32(6, packed_length, "zoom stop should have proper length");
+	assert_equals_u8buf(packed_stop_goal, output_buffer, sizeof(packed_stop_goal), "zoom stop should be properly encoded");
+	
 	printf("all tests pass!\n");
 	return 0;
 }
