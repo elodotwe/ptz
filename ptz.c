@@ -10,7 +10,7 @@ uint32_t libptz_pack_packet(uint8_t* payload, uint32_t payload_length, uint8_t* 
 	if (output_buffer_length < output_length) {
 		return 0;
 	}
-	memcpy(payload, output_buffer + 1, payload_length);
+	memcpy(output_buffer + 1, payload, payload_length);
 	output_buffer[0] = libptz_pack_packet_header(0, 0);
 	output_buffer[output_length - 1] = 0xff;
 	return output_length;
