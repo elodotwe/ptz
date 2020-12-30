@@ -1,11 +1,13 @@
+CFLAGS=-ggdb
+
 ptz.o: ptz.c
-	gcc -c $^
+	gcc $(CFLAGS) -c $^
 
 clean:
 	rm *.o
 
 ptz_tests.o: ptz_tests.c
-	gcc -c $^
+	gcc $(CFLAGS) -c $^
 
 test: ptz_tests.o ptz.o
-	gcc -o test $^
+	gcc $(CFLAGS) -o test $^
