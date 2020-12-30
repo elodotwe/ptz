@@ -25,12 +25,12 @@ int main() {
 	uint8_t payload_buffer[] = {0x12, 0x34, 0x56};
 	uint32_t packed_length = libptz_pack_packet(payload_buffer, sizeof(payload_buffer), output_buffer, sizeof(output_buffer));
 	assert_equals_u32(5, packed_length, "packed packet length with 3 payload bytes should be 5");
-	uint8_t packed_goal[] = {0x80, 0x12, 0x34, 0x56, 0xff};
+	uint8_t packed_goal[] = {0x81, 0x12, 0x34, 0x56, 0xff};
 	assert_equals_u8buf(packed_goal, output_buffer, sizeof(packed_goal), "packed packet should have proper header and terminator");
 
 	memset(output_buffer, 0, sizeof(output_buffer));
 
-	uint8_t packed_stop_goal[] = {0x80, 0x01, 0x04, 0x07, 0x00, 0xff};
+	uint8_t packed_stop_goal[] = {0x81, 0x01, 0x04, 0x07, 0x00, 0xff};
 	packed_length = libptz_encode_zoom_stop(output_buffer, sizeof(output_buffer));
 	assert_equals_u32(6, packed_length, "zoom stop should have proper length");
 	assert_equals_u8buf(packed_stop_goal, output_buffer, sizeof(packed_stop_goal), "zoom stop should be properly encoded");
